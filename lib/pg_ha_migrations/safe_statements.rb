@@ -346,9 +346,7 @@ module PgHaMigrations::SafeStatements
           AND pg_class.relname = ANY (ARRAY[#{quoted_child_index_names}])
       SQL
 
-      child_indexes.each do |child_index|
-        next unless invalid_child_index_names.include?(child_index.name)
-
+      invalid_child_index_names.each do |child_index|
         safe_remove_concurrent_index(child_index.table.fully_qualified_name, name: child_index.name)
       end
     end
